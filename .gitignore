@@ -1,0 +1,74 @@
+#############################
+#      .NET / C#           #
+#############################
+
+# Build folders
+bin/
+obj/
+
+# User-specific / IDE files
+.vs/
+*.user
+*.suo
+*.userprefs
+
+# Logs
+*.log
+Logs/
+
+# ASP.NET temporary files
+App_Data/
+App_Temp/
+tmp/
+
+# EF Migrations snapshots build artifacts
+Migrations/obj/
+
+#############################
+#        Docker             #
+#############################
+
+# Docker build context ignores
+data/
+db-data/
+docker-compose.dcproj
+
+#############################
+#          Nginx            #
+#############################
+
+# Nothing specific here unless you generate logs or temp files
+nginx/logs/
+nginx/temp/
+
+#############################
+#        OS Files           #
+#############################
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# macOS
+.DS_Store
+
+#############################
+#        Environment        #
+#############################
+
+# Do NOT commit environment settings
+launchSettings.json
+.env
+
+#############################
+#         Others            #
+#############################
+
+# Rider / VSCode / JetBrains
+.idea/
+.vscode/
+
+# Compiled DLLs (if generated accidentally)
+*.dll
+*.pdb
