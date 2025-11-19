@@ -9,7 +9,7 @@ namespace CleanArchitecture.Domain.Entities
         public string RegisterNumber { get; private set; }
         public DateTime EstablishedOn { get; private set; }
 
-        private Company(Guid id, string name, string registerNumber, DateTime establishedOn) : base(id)
+        private Company(Guid id, string name, string registerNumber, DateTime establishedOn)
         {
             Name = name;
             RegisterNumber = registerNumber;

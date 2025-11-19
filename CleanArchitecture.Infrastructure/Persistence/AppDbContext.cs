@@ -20,6 +20,7 @@ namespace CleanArchitecture.Infrastructure.Persistence
 
         public DbSet<Company> Companies => Set<Company>();
         public DbSet<Employee> Employees => Set<Employee>();
+        public DbSet<Contract> Contracts => Set<Contract>();
 
     }
 }

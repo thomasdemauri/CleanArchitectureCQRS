@@ -9,10 +9,9 @@ public class Employee : AgreggateRoot<Guid>
     public Guid CompanyId { get; private set; }
     public Company Company { get; private set; }
 
-    protected Employee() : base(Guid.NewGuid()) { }
+    protected Employee() { }
 
     private Employee(Guid id, string name, string email, DateTime birth, Guid companyId)
-        : base(id)
     {
         Name = name;
         Email = email;
