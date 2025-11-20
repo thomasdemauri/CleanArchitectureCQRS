@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Text.Json.Serialization;
 using System.Text.Json;
 using CleanArchitecture.Domain.Entities;
+using CleanArchitecture.Application.Queries;
 
 namespace CleanArchitectureCQRS.API.Controllers
 {
@@ -15,10 +16,10 @@ namespace CleanArchitectureCQRS.API.Controllers
     public class CompaniesController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly CompanyQueries _companyQueries;
+        private readonly ICompanyQueries _companyQueries;
         private readonly ICachingService _cache;
 
-        public CompaniesController(IMediator mediator, CompanyQueries companyQueries, ICachingService cache)
+        public CompaniesController(IMediator mediator, ICompanyQueries companyQueries, ICachingService cache)
         {
             _mediator = mediator;
             _companyQueries = companyQueries;

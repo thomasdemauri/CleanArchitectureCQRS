@@ -1,11 +1,13 @@
-﻿using CleanArchitecture.Application.ViewModels.Company;
+﻿using CleanArchitecture.Application.Queries;
+using CleanArchitecture.Application.ViewModels.Company;
 using CleanArchitecture.Infrastructure.Queries.Resources;
 using Dapper;
 using System.Data;
 
 namespace CleanArchitecture.Infrastructure.Queries
 {
-    public class CompanyQueries
+    public class CompanyQueries : ICompanyQueries
+
     {
         private IDbConnection _dbConnection;
 

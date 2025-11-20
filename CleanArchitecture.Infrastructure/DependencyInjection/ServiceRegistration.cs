@@ -1,5 +1,6 @@
 ﻿using CleanArchitecture.Application;
 using CleanArchitecture.Application.Interfaces;
+using CleanArchitecture.Application.Queries;
 using CleanArchitecture.Infrastructure.Caching;
 using CleanArchitecture.Infrastructure.Persistence;
 using CleanArchitecture.Infrastructure.Queries;
@@ -36,12 +37,14 @@ namespace CleanArchitecture.Infrastructure.DependencyInjection
             //services.AddTransient<IDbConnection>(sp =>
             //    new NpgsqlConnection(configuration.GetConnectionString("Npgsql")));
 
-            services.AddTransient<QueriesResource>();
-            services.AddTransient<CompanyQueries>();
-
-            services.AddScoped<ICompanyRepository, CompanyRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+            services.AddTransient<QueriesResource>();
+            
+            services.AddScoped<IEmployeeQueries, EmployeeQueries>();
+            services.AddScoped<ICompanyQueries, CompanyQueries>();
+            services.AddScoped<ICompanyRepository, CompanyRepository>();
+            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<ICachingService, CachingService>();
 
             return services;
