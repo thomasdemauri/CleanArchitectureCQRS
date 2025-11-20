@@ -24,7 +24,7 @@ namespace CleanArchitecture.Infrastructure.Queries
 
         public async Task<CompanyDetailedViewModel> GetById(Guid? id)
         {
-            return await _dbConnection.QuerySingleAsync<CompanyDetailedViewModel>(QueriesResource.CompanyQuery, new { Id = id });
+            return await _dbConnection.QueryFirstOrDefaultAsync<CompanyDetailedViewModel>(QueriesResource.CompanyQuery, new { Id = id });
         }
     }
 }
