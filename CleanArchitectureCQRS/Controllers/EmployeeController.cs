@@ -1,5 +1,6 @@
 ﻿using CleanArchitecture.Application.Commands.Employee;
 using CleanArchitecture.Application.Queries;
+using CleanArchitecture.Application.Requests.Employee;
 using CleanArchitecture.Application.ViewModels.Employee;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -43,6 +44,24 @@ namespace CleanArchitectureCQRS.API.Controllers
             }
 
             return Ok(employee);
+        }
+
+        [HttpPost]
+        [Route("{employeeId:guid}/contracts")]
+        public async Task<IActionResult> AddContract(Guid employeeId, [FromBody] AddEmployeeContractRequest request)
+        {
+            if (request == null)
+            {
+                return BadRequest();
+            }
+
+            var command = new CreateEmployeeContractCommand(
+                request.AdmissionDate, request.FirstProbationPeriodDays,
+                request.SecondProbationPeriodDays, request.Salary, request.ManagerId, employeeId);
+
+            var id = await _mediator.Send(command);
+
+            return CreatedAtAction(nameof(GetById), new { id = employeeId }, employeeId); // mudar aqui depois
         }
     }
 }

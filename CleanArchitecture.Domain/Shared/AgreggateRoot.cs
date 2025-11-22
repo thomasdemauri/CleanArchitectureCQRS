@@ -2,6 +2,6 @@
 {
     public abstract class AgreggateRoot<Tkey>
     {
-        public Tkey Id { get; protected set; }
+        public Tkey Id { get; protected set; } = default!;
     }
 }

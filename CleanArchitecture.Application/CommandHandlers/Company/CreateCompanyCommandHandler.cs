@@ -1,19 +1,20 @@
 ﻿using CleanArchitecture.Application.Commands.Company;
-using DomainCompany = CleanArchitecture.Domain.Entities.Company;
+using DomainCompany = CleanArchitecture.Domain.Entities.CompanyAggregate.Company;
 using MediatR;
 using CleanArchitecture.Application.Interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace CleanArchitecture.Application.CommandHandlers.Company
 {
-    public class CreateCompanyHandler : IRequestHandler<CreateCompanyCommand, Guid>
+    public class CreateCompanyCommandHandler : IRequestHandler<CreateCompanyCommand, Guid>
     {
         private readonly ICompanyRepository _companyRepository;
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly ILogger<CreateCompanyCommandHandler> _logger;
 
-        public CreateCompanyHandler(ICompanyRepository companyRepository, IUnitOfWork unitOfWork)
+        public CreateCompanyCommandHandler(ICompanyRepository companyRepository, ILogger<CreateCompanyCommandHandler> logger)
         {
             _companyRepository = companyRepository;
-            _unitOfWork = unitOfWork;
+            _logger = logger;
         }
 
         public async Task<Guid> Handle(CreateCompanyCommand request, CancellationToken cancellationToken)
@@ -22,7 +23,9 @@ namespace CleanArchitecture.Application.CommandHandlers.Company
                 request.Name, request.RegisterNumber, DateTime.Now);
 
             await _companyRepository.Add(company);
-            await _unitOfWork.SaveChangesAsync();
+            await _companyRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
+
+            _logger.LogInformation($"Company created successfully. Id: {company.Id}");
 
             return company.Id;
         }

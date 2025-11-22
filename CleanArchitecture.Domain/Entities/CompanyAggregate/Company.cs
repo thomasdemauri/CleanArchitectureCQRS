@@ -1,7 +1,7 @@
 ﻿using CleanArchitecture.Domain.Exceptions.CompanyExceptions;
 using CleanArchitecture.Domain.Shared;
 
-namespace CleanArchitecture.Domain.Entities
+namespace CleanArchitecture.Domain.Entities.CompanyAggregate
 {
     public class Company : AgreggateRoot<Guid>
     {

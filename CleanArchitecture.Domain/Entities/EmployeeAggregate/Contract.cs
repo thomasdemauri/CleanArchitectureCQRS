@@ -1,7 +1,7 @@
 ﻿using CleanArchitecture.Domain.Shared;
 using CleanArchitecture.Domain.Exceptions.ContractExceptions;
 
-namespace CleanArchitecture.Domain.Entities
+namespace CleanArchitecture.Domain.Entities.EmployeeAggregate
 {
     public class Contract : AgreggateRoot<Guid>
     {
@@ -11,9 +11,8 @@ namespace CleanArchitecture.Domain.Entities
         public decimal Salary { get; private set; }
         public Guid? ManagerId { get; private set; }
         public bool IsActive { get; private set; }
-        public bool? ApprovedFirstProbationPeriod { get; private set; }
-        public bool? ApprovedSecondProbationPeriod { get; private set; }
-
+        public bool ApprovedFirstProbationPeriod { get; private set; } = false;
+        public bool ApprovedSecondProbationPeriod { get; private set; } = false;
 
         protected Contract() { }
 
@@ -21,6 +20,7 @@ namespace CleanArchitecture.Domain.Entities
             Guid id, DateTime admissionDate, DateTime firstProbationEndDate,
             DateTime secondProbationEndDate, decimal salary, Guid? managerId)
         {
+            Id = id;
             AdmissionDate = admissionDate;
             FirstProbationEndDate = firstProbationEndDate;
             SecondProbationEndDate = secondProbationEndDate;
@@ -34,7 +34,7 @@ namespace CleanArchitecture.Domain.Entities
         }
 
         public static Contract Create(
-            Guid id, DateTime admissionDate, int firstProbationPeriodDays,
+            DateTime admissionDate, int firstProbationPeriodDays,
             int secondProbationPeriodDays, decimal salary, Guid? managerId)
         {
             if (admissionDate > DateTime.Now)

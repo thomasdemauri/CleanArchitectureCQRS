@@ -1,20 +1,17 @@
 ﻿using CleanArchitecture.Application.Commands.Employee;
 using CleanArchitecture.Application.Interfaces;
 using MediatR;
-using DomainEmployee = CleanArchitecture.Domain.Entities.Employee;
+using DomainEmployee = CleanArchitecture.Domain.Entities.EmployeeAggregate.Employee;
 
 
 namespace CleanArchitecture.Application.CommandHandlers.Employee
 {
     public class CreateEmployeeCommandHandler : IRequestHandler<CreateEmployeeCommand, Guid>
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IEmployeeRepository _employeeRepository;
-        public const int ENTITY_NOT_SAVED = -1;
 
-        public CreateEmployeeCommandHandler(IUnitOfWork unitOfWork, IEmployeeRepository employeeRepository)
+        public CreateEmployeeCommandHandler(IEmployeeRepository employeeRepository)
         {
-            _unitOfWork = unitOfWork;
             _employeeRepository = employeeRepository;
         }
 
@@ -27,7 +24,7 @@ namespace CleanArchitecture.Application.CommandHandlers.Employee
                 request.CompanyId);
 
             await _employeeRepository.Add(employee);
-            await _unitOfWork.SaveChangesAsync();
+            await _employeeRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
             
             return employee.Id;
         }

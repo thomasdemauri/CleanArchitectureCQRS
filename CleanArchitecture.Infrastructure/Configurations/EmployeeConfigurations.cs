@@ -1,4 +1,5 @@
-﻿using CleanArchitecture.Domain.Entities;
+﻿using CleanArchitecture.Domain.Entities.CompanyAggregate;
+using CleanArchitecture.Domain.Entities.EmployeeAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -21,9 +22,19 @@ namespace CleanArchitecture.Infrastructure.Configurations
                 .IsRequired()
                 .HasColumnType("date");
 
-            builder.Property(p => p.CompanyId)
-                .IsRequired()
-                .HasColumnType("uniqueidentifier");
+            builder.HasOne<Company>()
+                .WithMany()
+                .HasForeignKey(p => p.CompanyId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Ignore(p => p.CurrentContract);
+
+            builder.HasMany(e => e.Contracts)
+                .WithOne()
+                .HasForeignKey("EmployeeId")
+                .OnDelete(DeleteBehavior.Restrict)
+                .HasConstraintName("FK_Contract_Employee_EmployeeId");
+
         }
     }
 }

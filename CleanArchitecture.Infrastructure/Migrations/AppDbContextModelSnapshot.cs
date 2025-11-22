@@ -22,7 +22,7 @@ namespace CleanArchitecture.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("CleanArchitecture.Domain.Entities.Company", b =>
+            modelBuilder.Entity("CleanArchitecture.Domain.Entities.CompanyAggregate.Company", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -46,7 +46,7 @@ namespace CleanArchitecture.Infrastructure.Migrations
                     b.ToTable("Companies");
                 });
 
-            modelBuilder.Entity("CleanArchitecture.Domain.Entities.Contract", b =>
+            modelBuilder.Entity("CleanArchitecture.Domain.Entities.EmployeeAggregate.Contract", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -55,13 +55,14 @@ namespace CleanArchitecture.Infrastructure.Migrations
                     b.Property<DateTime>("AdmissionDate")
                         .HasColumnType("date");
 
-                    b.Property<bool?>("ApprovedFirstProbationPeriod")
-                        .IsRequired()
+                    b.Property<bool>("ApprovedFirstProbationPeriod")
                         .HasColumnType("bit");
 
-                    b.Property<bool?>("ApprovedSecondProbationPeriod")
-                        .IsRequired()
+                    b.Property<bool>("ApprovedSecondProbationPeriod")
                         .HasColumnType("bit");
+
+                    b.Property<Guid>("EmployeeId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("FirstProbationEndDate")
                         .HasColumnType("date");
@@ -80,12 +81,14 @@ namespace CleanArchitecture.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("EmployeeId");
+
                     b.HasIndex("ManagerId");
 
                     b.ToTable("Contracts");
                 });
 
-            modelBuilder.Entity("Employee", b =>
+            modelBuilder.Entity("CleanArchitecture.Domain.Entities.EmployeeAggregate.Employee", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -114,23 +117,33 @@ namespace CleanArchitecture.Infrastructure.Migrations
                     b.ToTable("Employees");
                 });
 
-            modelBuilder.Entity("CleanArchitecture.Domain.Entities.Contract", b =>
+            modelBuilder.Entity("CleanArchitecture.Domain.Entities.EmployeeAggregate.Contract", b =>
                 {
-                    b.HasOne("Employee", null)
+                    b.HasOne("CleanArchitecture.Domain.Entities.EmployeeAggregate.Employee", null)
+                        .WithMany("Contracts")
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("FK_Contract_Employee_EmployeeId");
+
+                    b.HasOne("CleanArchitecture.Domain.Entities.EmployeeAggregate.Employee", null)
                         .WithMany()
                         .HasForeignKey("ManagerId")
                         .HasConstraintName("FK_Contract_Employee_ManagerId");
                 });
 
-            modelBuilder.Entity("Employee", b =>
+            modelBuilder.Entity("CleanArchitecture.Domain.Entities.EmployeeAggregate.Employee", b =>
                 {
-                    b.HasOne("CleanArchitecture.Domain.Entities.Company", "Company")
+                    b.HasOne("CleanArchitecture.Domain.Entities.CompanyAggregate.Company", null)
                         .WithMany()
                         .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+                });
 
-                    b.Navigation("Company");
+            modelBuilder.Entity("CleanArchitecture.Domain.Entities.EmployeeAggregate.Employee", b =>
+                {
+                    b.Navigation("Contracts");
                 });
 #pragma warning restore 612, 618
         }

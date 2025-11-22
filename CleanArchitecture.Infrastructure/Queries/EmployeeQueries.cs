@@ -14,7 +14,7 @@ namespace CleanArchitecture.Infrastructure.Queries
         {
             _dbConnection = dbConnection;
         }
-        public async Task<EmployeeDetailedViewModel> GetById(Guid? id)
+        public async Task<EmployeeDetailedViewModel?> GetById(Guid? id)
         {
             return await _dbConnection.QueryFirstOrDefaultAsync<EmployeeDetailedViewModel>(QueriesResource.EmployeeDetailed, new { Id = id });
         }

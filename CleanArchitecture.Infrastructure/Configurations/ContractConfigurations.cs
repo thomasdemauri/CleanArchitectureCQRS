@@ -1,4 +1,4 @@
-﻿using CleanArchitecture.Domain.Entities;
+﻿using CleanArchitecture.Domain.Entities.EmployeeAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -19,21 +19,26 @@ namespace CleanArchitecture.Infrastructure.Configurations
                 .HasColumnType("date");
 
             builder.Property(p => p.ApprovedFirstProbationPeriod)
+                .HasColumnType("bit")
                 .IsRequired();
 
             builder.Property(p => p.ApprovedSecondProbationPeriod)
+                .HasColumnType("bit")
                 .IsRequired();
 
             builder.Property(p => p.Salary)
+                .HasColumnType("decimal(18,2)")
                 .IsRequired();
+
+            builder.Property<Guid>("EmployeeId")
+            .IsRequired();
 
             builder.HasOne<Employee>()
                 .WithMany()
                 .IsRequired(false)
-                .HasForeignKey(p => p.ManagerId)
+                .HasForeignKey(_ => _.ManagerId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Contract_Employee_ManagerId");
-
 
         }
     }

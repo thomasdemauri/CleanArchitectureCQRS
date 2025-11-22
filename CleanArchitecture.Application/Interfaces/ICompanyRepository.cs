@@ -1,5 +1,5 @@
 ﻿using CleanArchitecture.Application.Interfaces;
-using DomainCompany = CleanArchitecture.Domain.Entities.Company;
+using DomainCompany = CleanArchitecture.Domain.Entities.CompanyAggregate.Company;
 
 namespace CleanArchitecture.Application.Interfaces;
 
