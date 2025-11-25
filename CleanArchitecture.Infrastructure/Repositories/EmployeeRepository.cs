@@ -13,13 +13,8 @@ namespace CleanArchitecture.Infrastructure.Repositories
 
         public override async Task<Employee?> GetById(Guid id)
         {
-            var employee = await base.GetById(id);
-            if (employee == null)
-                return null;
-
-            _context.Entry(employee).Collection(e => e.Contracts).Load();
-
-            return employee;
+            return await _context.Employees.Include(e => e.Contracts)
+                .FirstOrDefaultAsync(e => e.Id == id);
         }
     }
 }

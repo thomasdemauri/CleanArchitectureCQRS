@@ -32,8 +32,11 @@ namespace CleanArchitecture.Infrastructure.Configurations
             builder.HasMany(e => e.Contracts)
                 .WithOne()
                 .HasForeignKey("EmployeeId")
-                .OnDelete(DeleteBehavior.Restrict)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Contract_Employee_EmployeeId");
+
+            builder.Navigation(e => e.Contracts)
+                .UsePropertyAccessMode(PropertyAccessMode.Field);
 
         }
     }

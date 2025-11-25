@@ -6,8 +6,8 @@ namespace CleanArchitecture.Domain.Entities.EmployeeAggregate
     public class Employee : AgreggateRoot<Guid>
     {
         public IReadOnlyCollection<Contract> Contracts => _contracts;
-        public Contract CurrentContract => _contracts.OrderByDescending(c => c.AdmissionDate).First();
         private List<Contract> _contracts = new();
+        public Contract CurrentContract => _contracts.OrderByDescending(c => c.AdmissionDate).First();
 
         public string Name { get; private set; }
         public string Email { get; private set; }

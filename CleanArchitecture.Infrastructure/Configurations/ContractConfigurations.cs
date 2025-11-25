@@ -9,6 +9,9 @@ namespace CleanArchitecture.Infrastructure.Configurations
     {
         public void Configure(EntityTypeBuilder<Contract> builder)
         {
+            builder.Property(p => p.Id)
+                .ValueGeneratedNever();
+
             builder.Property(p => p.AdmissionDate)
                 .HasColumnType("date");
 
@@ -36,7 +39,7 @@ namespace CleanArchitecture.Infrastructure.Configurations
             builder.HasOne<Employee>()
                 .WithMany()
                 .IsRequired(false)
-                .HasForeignKey(_ => _.ManagerId)
+                .HasForeignKey(c => c.ManagerId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Contract_Employee_ManagerId");
 
