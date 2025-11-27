@@ -42,6 +42,11 @@ namespace CleanArchitecture.Domain.Entities.EmployeeAggregate
                 throw new AdmissionDateCannotBeInFutureException();
             }
 
+            if (firstProbationPeriodDays + secondProbationPeriodDays != 90)
+            {
+                throw new InvalidProbationPeriodException("The total probation period cannot be 90 days.");
+            }
+
             var firstProbationEndDate = admissionDate.AddDays(firstProbationPeriodDays);
             var secondProbationEndDate = firstProbationEndDate.AddDays(secondProbationPeriodDays);
 

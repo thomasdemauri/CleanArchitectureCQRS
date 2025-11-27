@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CleanArchitecture.Domain.Exceptions
 {
-    internal class BaseDomainException : Exception
+    public class BaseDomainException : Exception
     {
         public BaseDomainException(string message) : base(message) { }
     }
