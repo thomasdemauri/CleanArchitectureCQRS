@@ -63,5 +63,22 @@ namespace CleanArchitectureCQRS.API.Controllers
 
             return CreatedAtAction(nameof(GetById), new { id = employeeId }, employeeId); // mudar aqui depois
         }
+
+        [HttpPost]
+        [Route("{employeeId:guid}/contract/approve")]
+        public async Task<IActionResult> ApproveFirstPeriod(Guid employeeId)
+        {
+            var command = new ApproveFirstProbationPeriodContractCommand(employeeId);
+
+            var result = await _mediator.Send(command);
+
+            if (!result)
+            {
+                return BadRequest();
+            }
+
+            return NoContent();
+        }
+
     }
 }
