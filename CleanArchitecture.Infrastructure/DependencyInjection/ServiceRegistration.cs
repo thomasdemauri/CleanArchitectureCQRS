@@ -1,7 +1,9 @@
 ﻿using CleanArchitecture.Application;
+using CleanArchitecture.Application.Abstractions.Events;
 using CleanArchitecture.Application.Interfaces;
 using CleanArchitecture.Application.Queries;
 using CleanArchitecture.Infrastructure.Caching;
+using CleanArchitecture.Infrastructure.Events;
 using CleanArchitecture.Infrastructure.Persistence;
 using CleanArchitecture.Infrastructure.Queries;
 using CleanArchitecture.Infrastructure.Queries.Resources;
@@ -46,6 +48,10 @@ namespace CleanArchitecture.Infrastructure.DependencyInjection
             services.AddScoped<ICompanyRepository, CompanyRepository>();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<ICachingService, CachingService>();
+
+            services.AddSingleton<IInMemoryMessageQueue, InMemoryMessageQueue>();
+            services.AddSingleton<IEventBus, EventBus>();
+            services.AddHostedService<IntegrationEventProcessorJob>();
 
             return services;
         }

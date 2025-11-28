@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -17,11 +17,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CleanArchitectureCQRS\CleanArchitecture.Application\CleanArchitecture.Application.csproj" />
-    <ProjectReference Include="..\CleanArchitectureCQRS\CleanArchitecture.Domain\CleanArchitecture.Domain.csproj" />
-    <ProjectReference Include="..\CleanArchitectureCQRS\CleanArchitecture.Infrastructure\CleanArchitecture.Infrastructure.csproj" />
-    <ProjectReference Include="..\CleanArchitectureCQRS\CleanArchitectureCQRS\CleanArchitectureCQRS.API.csproj" />
+    <ProjectReference Include="..\CleanArchitecture.Application\CleanArchitecture.Application.csproj" />
+    <ProjectReference Include="..\CleanArchitecture.Domain\CleanArchitecture.Domain.csproj" />
+    <ProjectReference Include="..\CleanArchitecture.Infrastructure\CleanArchitecture.Infrastructure.csproj" />
+    <ProjectReference Include="..\CleanArchitectureCQRS\CleanArchitectureCQRS.API.csproj" />
   </ItemGroup>
+
+
 
   <ItemGroup>
     <Using Include="Xunit" />

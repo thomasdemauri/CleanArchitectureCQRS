@@ -18,6 +18,8 @@
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.22">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
+		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.1" />
 
 		<!-- Se usar PostgreSQL -->
 		<PackageReference Include="Npgsql" Version="8.0.3" />
