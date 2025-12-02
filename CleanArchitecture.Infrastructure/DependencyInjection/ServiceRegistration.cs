@@ -2,12 +2,14 @@
 using CleanArchitecture.Application.Abstractions.Events;
 using CleanArchitecture.Application.Interfaces;
 using CleanArchitecture.Application.Queries;
+using CleanArchitecture.Infrastructure.Behaviour;
 using CleanArchitecture.Infrastructure.Caching;
 using CleanArchitecture.Infrastructure.Events;
 using CleanArchitecture.Infrastructure.Persistence;
 using CleanArchitecture.Infrastructure.Queries;
 using CleanArchitecture.Infrastructure.Queries.Resources;
 using CleanArchitecture.Infrastructure.Repositories;
+using MediatR;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -22,7 +24,12 @@ namespace CleanArchitecture.Infrastructure.DependencyInjection
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("Default")));
+                options.UseSqlServer(configuration.GetConnectionString("Default"), 
+                sqlServerOptionsAction: sqlOptions =>
+                {
+                    sqlOptions.EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
+                }
+            ));
 
             services.AddTransient<IDbConnection>(sp =>
                 new SqlConnection(configuration.GetConnectionString("Default")));
@@ -40,8 +47,9 @@ namespace CleanArchitecture.Infrastructure.DependencyInjection
             //    new NpgsqlConnection(configuration.GetConnectionString("Npgsql")));
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-
             services.AddTransient<QueriesResource>();
+
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(TransactionBehaviour<,>));
             
             services.AddScoped<IEmployeeQueries, EmployeeQueries>();
             services.AddScoped<ICompanyQueries, CompanyQueries>();

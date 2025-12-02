@@ -1,5 +1,5 @@
-using CleanArchitecture.Infrastructure.DependencyInjection;
 using CleanArchitecture.Application.DependencyInjection;
+using CleanArchitecture.Infrastructure.DependencyInjection;
 using CleanArchitecture.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
