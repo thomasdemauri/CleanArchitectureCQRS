@@ -1,4 +1,4 @@
-﻿using CleanArchitecture.Application;
+﻿using CleanArchitecture.Domain.Core.Data;
 using CleanArchitecture.Domain.Entities.CompanyAggregate;
 using CleanArchitecture.Domain.Entities.EmployeeAggregate;
 using MediatR;

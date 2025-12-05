@@ -1,4 +1,4 @@
-﻿namespace CleanArchitecture.Application;
+﻿namespace CleanArchitecture.Domain.Core.Data;
 
 public interface IUnitOfWork
 {

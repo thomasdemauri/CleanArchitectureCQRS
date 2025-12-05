@@ -1,4 +1,4 @@
-﻿using CleanArchitecture.Application;
+﻿using CleanArchitecture.Domain.Core.Data;
 
 namespace CleanArchitecture.Infrastructure.Persistence
 {

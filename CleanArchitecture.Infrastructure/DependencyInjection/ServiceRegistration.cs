@@ -1,20 +1,18 @@
-﻿using CleanArchitecture.Application;
-using CleanArchitecture.Application.Interfaces;
+﻿using CleanArchitecture.Application.Interfaces;
 using CleanArchitecture.Application.Queries;
+using CleanArchitecture.Domain.Core.Data;
+using CleanArchitecture.Domain.Entities.CompanyAggregate;
 using CleanArchitecture.Infrastructure.Behaviour;
 using CleanArchitecture.Infrastructure.Caching;
 using CleanArchitecture.Infrastructure.Persistence;
 using CleanArchitecture.Infrastructure.Queries;
 using CleanArchitecture.Infrastructure.Queries.Resources;
 using CleanArchitecture.Infrastructure.Repositories;
-using EventBus.Abstractions;
-using EventBusService.AzureBusService;
 using MediatR;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Npgsql;
 using System.Data;
 
 namespace CleanArchitecture.Infrastructure.DependencyInjection

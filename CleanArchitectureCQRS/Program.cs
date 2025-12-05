@@ -1,13 +1,9 @@
-using Autofac;
-using Autofac.Extensions.DependencyInjection;
 using CleanArchitecture.Application.DependencyInjection;
 using CleanArchitecture.Infrastructure.DependencyInjection;
 using CleanArchitecture.Infrastructure.Persistence;
 using EventBus.Abstractions;
 using EventBusService.AzureBusService;
-using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.Design;
 
 namespace CleanArchitectureCQRS
 {

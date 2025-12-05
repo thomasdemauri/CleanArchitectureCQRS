@@ -1,5 +1,4 @@
-﻿using CleanArchitecture.Application.Interfaces;
-using CleanArchitecture.Domain.Entities.CompanyAggregate;
+﻿using CleanArchitecture.Domain.Entities.CompanyAggregate;
 using CleanArchitecture.Infrastructure.Persistence;
 
 namespace CleanArchitecture.Infrastructure.Repositories

@@ -1,4 +1,4 @@
-﻿namespace CleanArchitecture.Application.Interfaces
+﻿namespace CleanArchitecture.Domain.Core.Data
 {
     public interface IRepository<TEntity, TKey> where TEntity : class
     {

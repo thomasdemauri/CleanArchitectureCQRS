@@ -1,9 +1,9 @@
 ﻿using CleanArchitecture.Application.Commands.Company;
 using DomainCompany = CleanArchitecture.Domain.Entities.CompanyAggregate.Company;
 using MediatR;
-using CleanArchitecture.Application.Interfaces;
 using Microsoft.Extensions.Logging;
 using EventBus.Abstractions;
+using CleanArchitecture.Domain.Entities.CompanyAggregate;
 
 namespace CleanArchitecture.Application.CommandHandlers.Company
 {

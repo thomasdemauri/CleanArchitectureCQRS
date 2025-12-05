@@ -29,7 +29,7 @@ Migrations/obj/
 #############################
 
 # Docker build context ignores
-data/
+/data/
 db-data/
 docker-compose.dcproj
 

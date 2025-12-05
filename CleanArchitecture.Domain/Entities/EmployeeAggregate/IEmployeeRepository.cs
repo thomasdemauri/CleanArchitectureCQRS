@@ -1,4 +1,5 @@
-﻿using CleanArchitecture.Domain.Entities.EmployeeAggregate;
+﻿using CleanArchitecture.Domain.Core.Data;
+using CleanArchitecture.Domain.Entities.EmployeeAggregate;
 
 namespace CleanArchitecture.Application.Interfaces
 {

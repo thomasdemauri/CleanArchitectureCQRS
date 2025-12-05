@@ -1,8 +1,6 @@
-﻿using CleanArchitecture.Application;
-using CleanArchitecture.Application.Interfaces;
+﻿using CleanArchitecture.Domain.Core.Data;
 using CleanArchitecture.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
-using static Dapper.SqlMapper;
 
 namespace CleanArchitecture.Infrastructure.Repositories
 {

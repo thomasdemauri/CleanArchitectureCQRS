@@ -1,7 +1,7 @@
-﻿using CleanArchitecture.Application.Interfaces;
+﻿using CleanArchitecture.Domain.Core.Data;
 using DomainCompany = CleanArchitecture.Domain.Entities.CompanyAggregate.Company;
 
-namespace CleanArchitecture.Application.Interfaces;
+namespace CleanArchitecture.Domain.Entities.CompanyAggregate;
 
 public interface ICompanyRepository : IRepository<DomainCompany, Guid>
 {
