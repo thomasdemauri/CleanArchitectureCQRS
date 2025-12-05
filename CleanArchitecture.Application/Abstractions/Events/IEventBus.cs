@@ -1,4 +1,6 @@
-﻿namespace CleanArchitecture.Application.Abstractions.Events
+﻿using EventBus.Events;
+
+namespace CleanArchitecture.Application.Abstractions
 {
     public interface IEventBus
     {

@@ -61,6 +61,9 @@ Desktop.ini
 launchSettings.json
 .env
 
+**/appsettings.json
+**/appsettings.*.json
+
 #############################
 #         Others            #
 #############################

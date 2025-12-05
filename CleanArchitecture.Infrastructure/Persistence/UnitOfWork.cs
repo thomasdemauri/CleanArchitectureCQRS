@@ -8,5 +8,11 @@ namespace CleanArchitecture.Infrastructure.Persistence
         {
             return await context.SaveChangesAsync(cancellationToken);
         }
+
+        public async Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default)
+        {
+            await context.SaveEntitiesAsync(cancellationToken);
+            return true;
+        }
     }
 }

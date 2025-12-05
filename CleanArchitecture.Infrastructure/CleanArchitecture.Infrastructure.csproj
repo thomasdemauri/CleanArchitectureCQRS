@@ -29,6 +29,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\EventBusService\EventBusService.csproj" />
 		<ProjectReference Include="..\CleanArchitecture.Application\CleanArchitecture.Application.csproj" />
 		<ProjectReference Include="..\CleanArchitecture.Domain\CleanArchitecture.Domain.csproj" />
 	</ItemGroup>

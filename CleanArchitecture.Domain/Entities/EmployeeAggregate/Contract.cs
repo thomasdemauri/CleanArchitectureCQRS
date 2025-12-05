@@ -3,7 +3,7 @@ using CleanArchitecture.Domain.Exceptions.ContractExceptions;
 
 namespace CleanArchitecture.Domain.Entities.EmployeeAggregate
 {
-    public class Contract : AgreggateRoot<Guid>
+    public class Contract : Entity<Guid>
     {
         public DateTime AdmissionDate { get; private set; }
         public DateTime FirstProbationEndDate { get; private set; }

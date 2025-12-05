@@ -1,9 +1,11 @@
-﻿using CleanArchitecture.Domain.Exceptions.CompanyExceptions;
+﻿using CleanArchitecture.Domain.DomainEvents.Company;
+using CleanArchitecture.Domain.Exceptions.CompanyExceptions;
 using CleanArchitecture.Domain.Shared;
+using System.Runtime.CompilerServices;
 
 namespace CleanArchitecture.Domain.Entities.CompanyAggregate
 {
-    public class Company : AgreggateRoot<Guid>
+    public class Company : Entity<Guid>
     {
         public string Name { get; private set; }
         public string RegisterNumber { get; private set; }
@@ -14,6 +16,8 @@ namespace CleanArchitecture.Domain.Entities.CompanyAggregate
             Name = name;
             RegisterNumber = registerNumber;
             EstablishedOn = establishedOn;
+
+            AddDomainEvent(new CompanyCreatedDomainEvent(name, registerNumber, establishedOn));
         }
 
         public static Company Create(string name, string registerNumber, DateTime establishedOn)

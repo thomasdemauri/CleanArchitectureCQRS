@@ -3,7 +3,7 @@ using System.Net.Http.Headers;
 
 namespace CleanArchitecture.Domain.Entities.EmployeeAggregate
 {
-    public class Employee : AgreggateRoot<Guid>
+    public class Employee : Entity<Guid>
     {
         public IReadOnlyCollection<Contract> Contracts => _contracts;
         private List<Contract> _contracts = new();
