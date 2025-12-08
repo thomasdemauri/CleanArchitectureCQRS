@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -18,9 +18,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\EventBusService\EventBusService.csproj" />
     <ProjectReference Include="..\CleanArchitecture.Application\CleanArchitecture.Application.csproj" />
     <ProjectReference Include="..\CleanArchitecture.Infrastructure\CleanArchitecture.Infrastructure.csproj" />
+    <ProjectReference Include="..\EventBusService\EventBusService.csproj" />
+    <ProjectReference Include="..\EventBus\EventBus.csproj" />
   </ItemGroup>
 
 </Project>

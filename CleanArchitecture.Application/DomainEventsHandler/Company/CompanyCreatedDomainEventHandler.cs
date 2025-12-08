@@ -14,12 +14,14 @@ namespace CleanArchitecture.Application.DomainEventsHandler.Company
             _eventBus = eventBus;
         }
 
-        public async Task Handle(CompanyCreatedDomainEvent notification, CancellationToken cancellationToken)
+        public Task Handle(CompanyCreatedDomainEvent notification, CancellationToken cancellationToken)
         {
             var @event = new CompanyCreatedIntegrationEvent(
                 notification.Name, notification.RegisterNumber, notification.EstablishedOn);
 
             _eventBus.PublishAsync(@event);
+
+            return Task.CompletedTask;
         }
     }
 }
