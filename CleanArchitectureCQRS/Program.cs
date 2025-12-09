@@ -1,6 +1,11 @@
 using CleanArchitecture.Application.DependencyInjection;
+using CleanArchitecture.Application.DomainEventsHandler.Company;
+using CleanArchitecture.Domain.DomainEvents.Company;
 using CleanArchitecture.Infrastructure.DependencyInjection;
 using CleanArchitecture.Infrastructure.Persistence;
+using CleanArchitectureCQRS.API.IntegrationEventHandler;
+using Contracts.HR.Company;
+using EventBus;
 using EventBus.Abstractions;
 using EventBusService.AzureBusService;
 using Microsoft.EntityFrameworkCore;
@@ -40,13 +45,22 @@ namespace CleanArchitectureCQRS
                         return new ServiceBusPersisterConnection(connectionString);
                     });
 
+
+                    builder.Services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
+
                     IServiceCollection serviceCollection = builder.Services.AddSingleton<IEventBus, EventBusInstance>(sp =>
                     {
-                        var serviceBusPersisterConnection = sp.GetRequiredService<IServiceBusPersisterConnection>();
                         //var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
+                        var serviceBusPersisterConnection = sp.GetRequiredService<IServiceBusPersisterConnection>();
+                        var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
                         var logger = sp.GetRequiredService<ILogger<EventBusInstance>>();
 
-                        return new EventBusInstance(serviceBusPersisterConnection, logger, topicName, subscription);
+                        var eventBus = new EventBusInstance(
+                            serviceBusPersisterConnection, logger, topicName, subscription, eventBusSubcriptionsManager);
+
+                        eventBus.Subscribe<CompanyCreatedIntegrationEvent, CompanyCreatedIntegrationEventHandler>();
+
+                        return eventBus;
                     });
                 }
             }

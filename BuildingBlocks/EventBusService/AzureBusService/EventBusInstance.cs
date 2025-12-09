@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Azure.Messaging.ServiceBus;
+using EventBus;
 using EventBus.Abstractions;
 using EventBus.Events;
 using Microsoft.Extensions.Logging;
@@ -15,28 +16,27 @@ namespace EventBusService.AzureBusService
 
         private ServiceBusSender _sender;
         private ServiceBusProcessor _processor;
+        private readonly IEventBusSubscriptionsManager _subscriptionsManager;
 
         private readonly string _topicName;
-        private readonly string _subscription;
+        private readonly string _subscriptionName;
         private const string INTEGRATION_EVENT_SUFFIX = "IntegrationEvent";
 
 
         public EventBusInstance(
             IServiceBusPersisterConnection serviceBusPersisterConnection,
-            ILogger<EventBusInstance> logger, string topicName, string subscription)
+            ILogger<EventBusInstance> logger, string topicName, string subscription, 
+            IEventBusSubscriptionsManager subscriptionsManager)
         {
             _topicName = topicName;
             _serviceBusPersisterConnection = serviceBusPersisterConnection;
             _sender = _serviceBusPersisterConnection.Client.CreateSender(_topicName);
             _logger = logger;
-            _subscription = subscription;
-
-            _logger.LogInformation($"🔧 Configurando EventBus:");
-            _logger.LogInformation($"   Topic: {_topicName}");
-            _logger.LogInformation($"   Subscription: {_subscription}");
+            _subscriptionName = subscription;
+            _subscriptionsManager = subscriptionsManager;
 
             ServiceBusProcessorOptions options = new() { MaxConcurrentCalls = 1, AutoCompleteMessages = false };
-            _processor = _serviceBusPersisterConnection.Client.CreateProcessor(_topicName, _subscription, options);
+            _processor = _serviceBusPersisterConnection.Client.CreateProcessor(_topicName, _subscriptionName, options);
 
             StartProcess().GetAwaiter().GetResult();
         }
@@ -52,17 +52,17 @@ namespace EventBusService.AzureBusService
                 Body = new BinaryData(jsonMessage),
                 Subject = eventName
             };
-            _logger.LogInformation($"📤 Publicando '{eventName}' (ID: {message.MessageId})");
-            _logger.LogDebug($"   Payload: {jsonMessage}");
+            _logger.LogInformation($"Publicando '{eventName}' (ID: {message.MessageId})");
+            _logger.LogDebug($"Payload: {jsonMessage}");
 
             try
             {
                 await _sender.SendMessageAsync(message);
-                _logger.LogInformation($"✅ Publicado com sucesso!");
+                _logger.LogInformation("Publicado com sucesso!");
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"❌ Erro ao publicar '{eventName}'");
+                _logger.LogError(ex, $"Erro ao publicar '{eventName}'");
                 throw;
             }
         }
@@ -71,15 +71,15 @@ namespace EventBusService.AzureBusService
         {
             try
             {
-                _logger.LogInformation($"🔵 Registrando handlers para topic '{_topicName}', subscription '{_subscription}'");
+                _logger.LogInformation($"Registrando handlers para topic '{_topicName}', subscription '{_subscriptionName}'");
 
                 _processor.ProcessMessageAsync += MessageHandler;
                 _processor.ProcessErrorAsync += ErrorHandler;
 
-                _logger.LogInformation("🔵 Iniciando processamento...");
+                _logger.LogInformation("Iniciando processamento...");
                 await _processor.StartProcessingAsync();
 
-                _logger.LogInformation("✅ Processador iniciado com sucesso!");
+                _logger.LogInformation("Processador iniciado com sucesso!");
             }
             catch (Exception ex)
             {
@@ -90,7 +90,7 @@ namespace EventBusService.AzureBusService
         public async Task MessageHandler(ProcessMessageEventArgs args)
         {
             string body = args.Message.Body.ToString();
-            _logger.LogInformation($"Received: {body} from subscription: <{_subscription}>");
+            _logger.LogInformation($"Received: {body} from subscription: <{_subscriptionName}>");
 
             await args.CompleteMessageAsync(args.Message);
         }
@@ -100,5 +100,10 @@ namespace EventBusService.AzureBusService
             _logger.LogError(args.Exception, $"Error handling message: {args.Exception.Message}");
             return Task.CompletedTask;
         }
-    }
+
+        public void Subscribe<T, TH>() where T : IntegrationEvent where TH : IIntegrationEventHandler<T>
+        {
+            _subscriptionsManager.AddSubscription<T, TH>();
+        }
+    }   
 }
