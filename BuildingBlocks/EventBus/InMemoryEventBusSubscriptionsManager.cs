@@ -16,6 +16,10 @@ namespace EventBus
     public interface IEventBusSubscriptionsManager
     {
         public void AddSubscription<T, TH>() where T : IntegrationEvent where TH : IIntegrationEventHandler<T>;
+        public bool HasSubscriptionsForEvent<T>() where T : IntegrationEvent;
+        public bool HasSubscriptionsForEvent(string eventName);
+        public IEnumerable<SubscriptionInfo> GetHandlersForEvent(string eventName);
+        public Type GetEventTypeByName(string eventName);
     }
 
     public class InMemoryEventBusSubscriptionsManager : IEventBusSubscriptionsManager
@@ -33,12 +37,12 @@ namespace EventBus
         {
             var eventName = GetEventKey<T>();
 
-            if (_eventTypes.Contains(typeof(T)))
+            if (!_eventTypes.Contains(typeof(T)))
             {
                 _eventTypes.Add(typeof(T));
             }
 
-            if (!_handlers.ContainsKey(eventName))
+            if (!HasSubscriptionsForEvent<T>())
             {
                 _handlers.Add(eventName, new List<SubscriptionInfo>());
             }
@@ -51,6 +55,21 @@ namespace EventBus
 
             _handlers[eventName].Add(new SubscriptionInfo(typeof(TH)));
         }
+
+        public bool HasSubscriptionsForEvent<T>() where T : IntegrationEvent
+        {
+            var key = GetEventKey<T>();
+            return _handlers.ContainsKey(key);
+        }
+
+        public bool HasSubscriptionsForEvent(string eventName)
+        {
+            return _handlers.ContainsKey(eventName);
+        }
+
+        public IEnumerable<SubscriptionInfo> GetHandlersForEvent(string eventName) => _handlers[eventName];
+
+        public Type GetEventTypeByName(string eventName) => _eventTypes.SingleOrDefault(t => t.Name == eventName);
 
         private string GetEventKey<T>()
         {

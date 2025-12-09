@@ -1,3 +1,5 @@
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using CleanArchitecture.Application.DependencyInjection;
 using CleanArchitecture.Application.DomainEventsHandler.Company;
 using CleanArchitecture.Domain.DomainEvents.Company;
@@ -17,6 +19,8 @@ namespace CleanArchitectureCQRS
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
@@ -48,15 +52,18 @@ namespace CleanArchitectureCQRS
 
                     builder.Services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
 
+                    builder.Services.AddTransient<CompanyCreatedIntegrationEventHandler>();
+
                     IServiceCollection serviceCollection = builder.Services.AddSingleton<IEventBus, EventBusInstance>(sp =>
                     {
-                        //var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
+                        var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
                         var serviceBusPersisterConnection = sp.GetRequiredService<IServiceBusPersisterConnection>();
                         var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
                         var logger = sp.GetRequiredService<ILogger<EventBusInstance>>();
 
                         var eventBus = new EventBusInstance(
-                            serviceBusPersisterConnection, logger, topicName, subscription, eventBusSubcriptionsManager);
+                            serviceBusPersisterConnection, logger, topicName, 
+                            subscription, eventBusSubcriptionsManager, iLifetimeScope);
 
                         eventBus.Subscribe<CompanyCreatedIntegrationEvent, CompanyCreatedIntegrationEventHandler>();
 
